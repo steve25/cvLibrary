@@ -20,7 +20,7 @@
                   ref="firstInputRef"
                   type="text"
                   id="firstItemInput"
-                  class="text-zinc-800"
+                  class="w-56 text-zinc-800"
                   v-model="baseStore.firstItemInput"
                 />
               </div>
@@ -29,7 +29,7 @@
                 <input
                   type="text"
                   id="secondItemInput"
-                  class="text-zinc-800"
+                  class="w-56 text-zinc-800"
                   v-model="baseStore.secondItemInput"
                 />
               </div>

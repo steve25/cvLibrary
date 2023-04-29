@@ -1,6 +1,6 @@
 <template>
   <dialog
-    v-if="menu.activeWindow === 'quit'"
+    v-if="baseStore.activeWindow === 'quit'"
     class="absolute inset-0 flex items-center justify-center bg-gray-700 bg-opacity-50"
   >
     <div
@@ -14,14 +14,8 @@
   </dialog>
 </template>
 
-<script>
-import { useMenuStore } from '@/stores/menu.js';
+<script setup>
+import { useBaseStore } from '@/stores/useBase.js';
 
-export default {
-  setup() {
-    const menu = useMenuStore();
-
-    return { menu };
-  }
-};
+const baseStore = useBaseStore();
 </script>

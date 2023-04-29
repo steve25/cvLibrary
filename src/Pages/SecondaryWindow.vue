@@ -1,62 +1,59 @@
 <template>
   <dialog
-    v-if="menu.activeWindow === 'secondary'"
+    v-if="baseStore.activeWindow === 'secondary'"
     class="absolute inset-0 flex items-center justify-center bg-gray-700 bg-opacity-50"
   >
     <div
-      class="w-[600px] p-6 bg-blue-800 shadow-xl text-gray-200 border border-white cursor-default"
+      class="w-[600px] p-4 bg-blue-800 shadow-xl text-gray-200 border border-white cursor-default"
     >
-      <div class="text-center mb-6">
-        <base-title :title="activeTitle" text-size="text-2xl"/>
+      <div class="text-center mb-4">
+        <base-title :title="baseStore.activeMainTitle" text-size="text-2xl" />
+        {{ baseStore.browserWindowRef.length }}
       </div>
-      <ul class="text-base border-2 border-slate-200 p-4">
-        <base-menu
-          v-for="(secondaryMenuItem, index) in menu.secondaryMenuItems"
-          :key="secondaryMenuItem"
-          :menuItem="secondaryMenuItem"
-          :index="index"
-          :isActive="menu.isActiveSecondary"
-        />
-      </ul>
-      <div class="mt-5 text-sm text-white text-center">
-        <p>up down key - move, left right key - change between menu and browser, enter - select</p>
+
+      <div class="flex justify-around">
+        <div
+          class="bg-gray-400 px-2 py-4 border-4"
+          :class="[baseStore.activeNavigation === 'browser' ? 'border-red-600' : 'border-gray-400']"
+        >
+          <div class="h-56 w-96 relative overflow-auto bg-cyan-500">
+            <the-browser />
+          </div>
+        </div>
+        <div class="ml-6">
+          <ul
+            class="text-base border-2 p-4"
+            :class="[baseStore.activeNavigation === 'menu' ? 'border-red-600' : 'border-slate-200']"
+          >
+            <base-menu
+              v-for="(secondaryMenuItem, index) in baseMenu.secondaryMenuItems"
+              :key="secondaryMenuItem"
+              :menuItem="secondaryMenuItem"
+              :index="index"
+              :isActive="baseMenu.isActiveSecondary"
+              color="bg-orange-800"
+            />
+          </ul>
+        </div>
+      </div>
+      <div class="mt-5 text-xs text-white text-center">
+        <p>up / down key - move</p>
+        <p>F4 - change between menu and browser</p>
+        <p>enter - select</p>
       </div>
     </div>
   </dialog>
 </template>
 
-<script>
+<script setup>
 import BaseMenu from '../Components/Base/BaseMenu.vue';
 import BaseTitle from '../Components/Base/BaseTitle.vue';
+import TheBrowser from '../Components/SecondaryWindow/TheBrowser.vue';
 
-import { useMenuStore } from '@/stores/menu.js';
-import { computed } from 'vue';
+import { useMenuStore } from '@/stores/useMenu.js';
+import { useBaseStore } from '@/stores/useBase.js';
+import { useUsersStore } from '@/stores/useUsers.js';
 
-export default {
-  components: {
-    BaseMenu,
-    BaseTitle
-  },
-  props: {
-    isSecondaryWindowOpen: Boolean,
-    isActiveSecondary: Number,
-    secondaryMenuItems: Array
-  },
-
-  setup(props) {
-    const menu = useMenuStore();
-
-    const activeTitle = computed(() => {
-      if (menu.isActiveMain === 1) {
-        return 'Borrows';
-      } else if (menu.isActiveMain === 2) {
-        return 'Users';
-      } else {
-        return 'Books';
-      }
-    });
-
-    return { menu, activeTitle };
-  }
-};
+const baseMenu = useMenuStore();
+const baseStore = useBaseStore();
 </script>

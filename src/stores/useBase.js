@@ -16,8 +16,6 @@ export const useBaseStore = defineStore('baseStore', {
       secondItemInput: '',
       dataLength: null,
       stopActiveWindow: false,
-      findFirstItem: '',
-      findSecondItem: ''
     };
   },
   getters: {

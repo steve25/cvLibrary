@@ -1,6 +1,6 @@
 <template>
   <dialog
-    v-if="baseStore.activeWindow === 'quit'"
+    v-if="base.activeWindow === 'quit'"
     class="absolute inset-0 flex items-center justify-center bg-gray-700 bg-opacity-50"
   >
     <div
@@ -15,7 +15,7 @@
 </template>
 
 <script setup>
-import { useBaseStore } from '@/stores/useBase.js';
+import { useBaseStore } from '@/stores/base.js';
 
-const baseStore = useBaseStore();
+const base = useBaseStore();
 </script>

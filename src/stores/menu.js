@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia';
-import { useBaseStore } from './useBase.js';
-import { useUsersStore } from './useUsers.js';
-import { useBooksStore } from './useBooks.js';
-import { useBorrowsStore } from './useBorrows.js';
+import { useBaseStore } from './base.js';
+import { useUsersStore } from './users.js';
+import { useBooksStore } from './books.js';
+import { useBorrowsStore } from './borrows.js';
 
 export const useMenuStore = defineStore('menu', {
   state: () => {
@@ -11,20 +11,20 @@ export const useMenuStore = defineStore('menu', {
       secondaryMenuItems: ['Add', 'Edit', 'Delete', 'Close'],
       addMenuItems: ['Save', 'Cancel'],
       confirmMenuItems: ['Delete', 'Cancel'],
-      isActiveMain: 1,
-      isActiveSecondary: 1,
-      isActiveBrowser: 1,
-      isActiveAdd: 1,
-      isActiveConfirm: 1
+      activeMainItem: 1,
+      activeSecondaryItem: 1,
+      activeBrowserItem: 1,
+      activeAddIttem: 1,
+      activeConfirmIttem: 1
     };
   },
   getters: {
     getDataItemsLength(state) {
-      if (state.isActiveMain === 1 && useBorrowsStore().borrows)
+      if (state.activeMainItem === 1 && useBorrowsStore().borrows)
         return Object.keys(useBorrowsStore().borrows).length;
-      if (state.isActiveMain === 2 && useUsersStore().users)
+      if (state.activeMainItem === 2 && useUsersStore().users)
         return Object.keys(useUsersStore().users).length;
-      if (state.isActiveMain === 3 && useBooksStore().books)
+      if (state.activeMainItem === 3 && useBooksStore().books)
         return Object.keys(useBooksStore().books).length;
       return 0;
     }
@@ -34,11 +34,11 @@ export const useMenuStore = defineStore('menu', {
       switch (e.keyCode) {
         // key arrow up
         case 38:
-          this.menuKeyUp('isActiveMain', this.mainMenuItems);
+          this.menuKeyUp('activeMainItem', this.mainMenuItems);
           break;
         // key arrow down
         case 40:
-          this.menuKeyDown('isActiveMain', this.mainMenuItems);
+          this.menuKeyDown('activeMainItem', this.mainMenuItems);
           break;
         // enter
         case 13:
@@ -47,8 +47,8 @@ export const useMenuStore = defineStore('menu', {
       }
     },
     mainKeyEnter() {
-      if (this.isActiveMain !== 4) return (useBaseStore().activeWindow = 'secondary');
-      (this.isActiveMain = 1), (this.isActiveSecondary = 1);
+      if (this.activeMainItem !== 4) return (useBaseStore().activeWindow = 'secondary');
+      (this.activeMainItem = 1), (this.activeSecondaryItem = 1);
       useBaseStore().activeWindow = 'quit';
     },
     //keypress in secondary window
@@ -75,14 +75,14 @@ export const useMenuStore = defineStore('menu', {
     secondaryKeyUp() {
       // menu
       if (useBaseStore().activeNavigation === 'menu')
-        return this.menuKeyUp('isActiveSecondary', this.secondaryMenuItems);
+        return this.menuKeyUp('activeSecondaryItem', this.secondaryMenuItems);
       // browser
       this.browserKeyUp();
     },
     secondaryKeyDown() {
       // menu
       if (useBaseStore().activeNavigation === 'menu')
-        return this.menuKeyDown('isActiveSecondary', this.secondaryMenuItems);
+        return this.menuKeyDown('activeSecondaryItem', this.secondaryMenuItems);
       // browser
       this.browserKeyDown();
     },
@@ -94,7 +94,7 @@ export const useMenuStore = defineStore('menu', {
     },
     secondaryKeyEnter() {
       // enter
-      switch (this.isActiveSecondary) {
+      switch (this.activeSecondaryItem) {
         // add
         case 1:
           useBaseStore().activeWindow = 'add';
@@ -103,9 +103,9 @@ export const useMenuStore = defineStore('menu', {
         case 2:
           if (this.getDataItemsLength === 0) return useBaseStore().showDialog('No item selected');
           useBaseStore().firstItemInput =
-            useBaseStore().browserFirstItemRef[this.isActiveBrowser].innerText;
+            useBaseStore().browserFirstItemRef[this.activeBrowserItem].innerText;
           useBaseStore().secondItemInput =
-            useBaseStore().browserSecondItemRef[this.isActiveBrowser].innerText;
+            useBaseStore().browserSecondItemRef[this.activeBrowserItem].innerText;
           useBaseStore().activeWindow = 'add';
           break;
         // delete
@@ -118,7 +118,7 @@ export const useMenuStore = defineStore('menu', {
           break;
         // close
         case 4:
-          (this.isActiveMain = 1), (this.isActiveSecondary = 1), (this.isActiveBrowser = 1);
+          (this.activeMainItem = 1), (this.activeSecondaryItem = 1), (this.activeBrowserItem = 1);
           useBaseStore().activeWindow = 'main';
           break;
       }
@@ -128,11 +128,11 @@ export const useMenuStore = defineStore('menu', {
       switch (e.keyCode) {
         // key arrow up
         case 38:
-          this.menuKeyUp('isActiveAdd', this.addMenuItems);
+          this.menuKeyUp('activeAddIttem', this.addMenuItems);
           break;
         // key arrow down
         case 40:
-          this.menuKeyDown('isActiveAdd', this.addMenuItems);
+          this.menuKeyDown('activeAddIttem', this.addMenuItems);
           break;
         // enter
         case 13:
@@ -141,16 +141,16 @@ export const useMenuStore = defineStore('menu', {
       }
     },
     addKeyEnter() {
-      switch (this.isActiveAdd) {
+      switch (this.activeAddIttem) {
         // save
         case 1:
           // save new user
-          if (this.isActiveMain === 2) {
+          if (this.activeMainItem === 2) {
             if (useBaseStore().firstItemInput === '' || useBaseStore().secondItemInput === '') {
               useBaseStore().showDialog('All fields required');
               return;
             }
-            if (this.isActiveSecondary === 1) {
+            if (this.activeSecondaryItem === 1) {
               useUsersStore().addNewUser();
             } else {
               useUsersStore().editNewUser();
@@ -161,7 +161,7 @@ export const useMenuStore = defineStore('menu', {
               useBaseStore().showDialog('All fields required');
               return;
             }
-            if (this.isActiveSecondary === 1) {
+            if (this.activeSecondaryItem === 1) {
               useBooksStore().addNewBook();
             } else {
               useBooksStore().editNewBook();
@@ -169,12 +169,12 @@ export const useMenuStore = defineStore('menu', {
           }
           useBaseStore().firstItemInput = '';
           useBaseStore().secondItemInput = '';
-          this.isActiveAdd = 1;
+          this.activeAddIttem = 1;
           useBaseStore().activeWindow = 'secondary';
           break;
         // cancel
         case 2:
-          this.isActiveAdd = 1;
+          this.activeAddIttem = 1;
           useBaseStore().activeWindow = 'secondary';
           break;
       }
@@ -183,11 +183,11 @@ export const useMenuStore = defineStore('menu', {
       switch (e.keyCode) {
         // key arrow up
         case 38:
-          this.menuKeyUp('isActiveConfirm', this.confirmMenuItems);
+          this.menuKeyUp('activeConfirmIttem', this.confirmMenuItems);
           break;
         // key arrow down
         case 40:
-          this.menuKeyDown('isActiveConfirm', this.confirmMenuItems);
+          this.menuKeyDown('activeConfirmIttem', this.confirmMenuItems);
           break;
         // enter
         case 13:
@@ -195,19 +195,19 @@ export const useMenuStore = defineStore('menu', {
       }
     },
     confirmKeyEnter() {
-      switch (this.isActiveConfirm) {
+      switch (this.activeConfirmIttem) {
         case 1:
-          if (this.isActiveMain === 2) {
+          if (this.activeMainItem === 2) {
             useUsersStore().deleteUser();
-          } else if (this.isActiveMain === 3) {
+          } else if (this.activeMainItem === 3) {
             useBooksStore().deleteBook();
           }
-          this.isActiveConfirm = 1;
+          this.activeConfirmIttem = 1;
           useBaseStore().confirmWindow = false;
           useBaseStore().stopActiveWindow = false;
           break;
         case 2:
-          this.isActiveConfirm = 1;
+          this.activeConfirmIttem = 1;
           useBaseStore().confirmWindow = false;
           useBaseStore().stopActiveWindow = false;
           break;
@@ -229,21 +229,21 @@ export const useMenuStore = defineStore('menu', {
     },
     browserKeyUp() {
       if (this.getDataItemsLength === 0) return;
-      if (this.isActiveBrowser === 1) {
-        this.isActiveBrowser = this.getDataItemsLength;
+      if (this.activeBrowserItem === 1) {
+        this.activeBrowserItem = this.getDataItemsLength;
       } else {
-        this.isActiveBrowser--;
+        this.activeBrowserItem--;
       }
-      useBaseStore().focusBrowserWindow(this.isActiveBrowser);
+      useBaseStore().focusBrowserWindow(this.activeBrowserItem);
     },
     browserKeyDown() {
       if (this.getDataItemsLength === 0) return;
-      if (this.isActiveBrowser === this.getDataItemsLength) {
-        this.isActiveBrowser = 1;
+      if (this.activeBrowserItem === this.getDataItemsLength) {
+        this.activeBrowserItem = 1;
       } else {
-        this.isActiveBrowser++;
+        this.activeBrowserItem++;
       }
-      useBaseStore().focusBrowserWindow(this.isActiveBrowser);
+      useBaseStore().focusBrowserWindow(this.activeBrowserItem);
     }
   }
 });

@@ -8,11 +8,11 @@
           <base-title title="Simple Library" text-size="text-3xl" />
           <ul class="text-base border-2 border-slate-200 p-4">
             <base-menu
-              v-for="(mainMenuItem, index) in baseMenu.mainMenuItems"
+              v-for="(mainMenuItem, index) in menu.mainMenuItems"
               :key="mainMenuItem"
               :menuItem="mainMenuItem"
               :index="index"
-              :isActive="baseMenu.isActiveMain"
+              :isActive="menu.activeMainItem"
               color="bg-orange-800"
             />
           </ul>
@@ -33,8 +33,8 @@
 
 <script setup>
 import { onMounted, onUnmounted } from 'vue';
-import { useMenuStore } from '@/stores/useMenu.js';
-import { useBaseStore } from '@/stores/useBase.js';
+import { useMenuStore } from '@/stores/menu.js';
+import { useBaseStore } from '@/stores/base.js';
 
 import BaseMenu from '../Components/Base/BaseMenu.vue';
 import BaseTitle from '../Components/Base/BaseTitle.vue';
@@ -44,8 +44,8 @@ import BaseDialog from '../Components/Base/BaseDialog.vue';
 import BaseConfirm from '../Components/Base/BaseConfirm.vue';
 import QuitWindow from './QuitWindow.vue';
 
-const baseMenu = useMenuStore();
-const baseStore = useBaseStore();
+const menu = useMenuStore();
+const base = useBaseStore();
 
 onMounted(() => {
   window.addEventListener('keyup', keyPress);
@@ -74,23 +74,21 @@ onMounted(() => {
 
 // keypress
 let keyPress = (e) => {
-  switch (baseStore.activeWindow) {
+  switch (base.activeWindow) {
     case 'main':
-      baseMenu.mainKeyControl(e);
+      menu.mainKeyControl(e);
       break;
     case 'secondary':
-      baseMenu.secondaryKeyControl(e);
+      menu.secondaryKeyControl(e);
       break;
     case 'add':
-      baseMenu.addKeyControl(e);
+      menu.addKeyControl(e);
       break;
     case 'quit':
-      baseMenu.quitKeyControl(e);
+      menu.quitKeyControl(e);
       break;
   }
 
-  if (baseStore.confirmWindow) {
-    baseMenu.confirmKeyControl(e);
-  }
+  if (base.confirmWindow) menu.confirmKeyControl(e);
 };
 </script>

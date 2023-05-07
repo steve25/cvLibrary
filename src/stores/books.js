@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia';
 import axios from 'axios';
 
-import { useBaseStore } from './useBase.js';
-import { useMenuStore } from './useMenu.js';
+import { useBaseStore } from './base.js';
+import { useMenuStore } from './menu.js';
 
 export const useBooksStore = defineStore('books', {
   state: () => {
@@ -34,8 +34,8 @@ export const useBooksStore = defineStore('books', {
           booksIndex.push(bookIndex);
         });
         let index = booksIndex.findIndex((i) => i[0] === res.data.name);
-        useMenuStore().isActiveBrowser = index + 1;
-        useBaseStore().focusBrowserWindow(useMenuStore().isActiveBrowser);
+        useMenuStore().activeBrowserItem = index + 1;
+        useBaseStore().focusBrowserWindow(useMenuStore().activeBrowserItem);
       } catch (error) {
         useBaseStore().showDialog(error);
       }
@@ -48,11 +48,11 @@ export const useBooksStore = defineStore('books', {
       try {
         await axios.put(
           `https://cvlibrary-fc29c-default-rtdb.europe-west1.firebasedatabase.app/books/${
-            this.books[useMenuStore().isActiveBrowser - 1][0]
+            this.books[useMenuStore().activeBrowserItem - 1][0]
           }.json`,
           bookData
         );
-        let oldIndex = this.books[useMenuStore().isActiveBrowser - 1][0];
+        let oldIndex = this.books[useMenuStore().activeBrowserItem - 1][0];
         useBaseStore().showDialog('Book edited');
         await this.fetchBooks();
         let q = [];
@@ -61,8 +61,8 @@ export const useBooksStore = defineStore('books', {
           q.push(e);
         });
         let index = q.findIndex((i) => i[0] === oldIndex);
-        useMenuStore().isActiveBrowser = index + 1;
-        console.log(this.books[useMenuStore().isActiveBrowser - 1][0]);
+        useMenuStore().activeBrowserItem = index + 1;
+        console.log(this.books[useMenuStore().activeBrowserItem - 1][0]);
         useBaseStore().browserWindowRef[index + 1].scrollIntoView({
           block: 'center'
         });
@@ -86,11 +86,11 @@ export const useBooksStore = defineStore('books', {
       try {
         const data = await axios.delete(
           `https://cvlibrary-fc29c-default-rtdb.europe-west1.firebasedatabase.app/books/${
-            this.books[useMenuStore().isActiveBrowser - 1][0]
+            this.books[useMenuStore().activeBrowserItem - 1][0]
           }.json`
         );
-        // useBaseStore().browserFirstItemRef.slice(useMenuStore().isActiveBrowser - 1, 1);
-        // useBaseStore().browserSecondItemRef.slice(useMenuStore().isActiveBrowser - 1, 1);
+        // useBaseStore().browserFirstItemRef.slice(useMenuStore().activeBrowserItem - 1, 1);
+        // useBaseStore().browserSecondItemRef.slice(useMenuStore().activeBrowserItem - 1, 1);
         useBaseStore().showDialog('Book deleted');
         this.fetchBooks();
       } catch (error) {

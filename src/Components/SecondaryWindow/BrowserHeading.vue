@@ -7,17 +7,13 @@
 
 <script setup>
 import { computed } from 'vue';
-import { useMenuStore } from '@/stores/useMenu.js';
+import { useMenuStore } from '@/stores/menu.js';
 
-const baseMenu = useMenuStore();
+const menu = useMenuStore();
 
 const headingValues = computed(() => {
-  if (baseMenu.isActiveMain === 1) {
-    return ['User id', 'Book id'];
-  } else if (baseMenu.isActiveMain === 2) {
-    return ['Lastname', 'Firstname'];
-  } else {
-    return ['Title', 'Author'];
-  }
+  if (menu.activeMainItem === 1) return ['User id', 'Book id'];
+  if (menu.activeMainItem === 2) return ['Lastname', 'Firstname'];
+  return ['Title', 'Author'];
 });
 </script>

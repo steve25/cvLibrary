@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
-import { useMenuStore } from './useMenu.js';
+import { useMenuStore } from './menu.js';
 
-export const useBaseStore = defineStore('baseStore', {
+export const useBaseStore = defineStore('base', {
   state: () => {
     return {
       activeWindow: 'main',
@@ -20,13 +20,13 @@ export const useBaseStore = defineStore('baseStore', {
   },
   getters: {
     activeMainTitle() {
-      if (useMenuStore().isActiveMain === 1) return 'Borrows';
-      if (useMenuStore().isActiveMain === 2) return 'Users';
+      if (useMenuStore().activeMainItem === 1) return 'Borrows';
+      if (useMenuStore().activeMainItem === 2) return 'Users';
       return 'Books';
     },
     activeSecondaryTitle() {
-      if (useMenuStore().isActiveSecondary === 1) return 'Add';
-      if (useMenuStore().isActiveSecondary === 2) return 'Edit';
+      if (useMenuStore().activeSecondaryItem === 1) return 'Add';
+      if (useMenuStore().activeSecondaryItem === 2) return 'Edit';
       return 'Delete';
     }
   },
@@ -40,7 +40,7 @@ export const useBaseStore = defineStore('baseStore', {
       }, 2000);
     },
     focusBrowserWindow(index) {
-      useBaseStore().browserWindowRef[index].scrollIntoView({
+      useBaseStore().browserWindowRef[index-1].scrollIntoView({
         behavior: 'smooth',
         block: 'center'
       });

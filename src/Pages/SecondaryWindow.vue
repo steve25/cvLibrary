@@ -1,20 +1,19 @@
 <template>
   <dialog
-    v-if="baseStore.activeWindow === 'secondary'"
+    v-if="base.activeWindow === 'secondary'"
     class="absolute inset-0 flex items-center justify-center bg-gray-700 bg-opacity-50"
   >
     <div
       class="w-[600px] p-4 bg-blue-800 shadow-xl text-gray-200 border border-white cursor-default"
     >
       <div class="text-center mb-4">
-        <base-title :title="baseStore.activeMainTitle" text-size="text-2xl" />
-        {{ baseStore.browserWindowRef.length }}
+        <base-title :title="base.activeMainTitle" text-size="text-2xl" />
       </div>
 
       <div class="flex justify-around">
         <div
           class="bg-gray-400 px-2 py-4 border-4"
-          :class="[baseStore.activeNavigation === 'browser' ? 'border-red-600' : 'border-gray-400']"
+          :class="[base.activeNavigation === 'browser' ? 'border-red-600' : 'border-gray-400']"
         >
           <div class="h-56 w-96 relative overflow-auto bg-cyan-500">
             <the-browser />
@@ -23,14 +22,14 @@
         <div class="ml-6">
           <ul
             class="text-base border-2 p-4"
-            :class="[baseStore.activeNavigation === 'menu' ? 'border-red-600' : 'border-slate-200']"
+            :class="[base.activeNavigation === 'menu' ? 'border-red-600' : 'border-slate-200']"
           >
             <base-menu
-              v-for="(secondaryMenuItem, index) in baseMenu.secondaryMenuItems"
+              v-for="(secondaryMenuItem, index) in menu.secondaryMenuItems"
               :key="secondaryMenuItem"
               :menuItem="secondaryMenuItem"
               :index="index"
-              :isActive="baseMenu.isActiveSecondary"
+              :isActive="menu.activeSecondaryItem"
               color="bg-orange-800"
             />
           </ul>
@@ -50,10 +49,9 @@ import BaseMenu from '../Components/Base/BaseMenu.vue';
 import BaseTitle from '../Components/Base/BaseTitle.vue';
 import TheBrowser from '../Components/SecondaryWindow/TheBrowser.vue';
 
-import { useMenuStore } from '@/stores/useMenu.js';
-import { useBaseStore } from '@/stores/useBase.js';
-import { useUsersStore } from '@/stores/useUsers.js';
+import { useMenuStore } from '@/stores/menu.js';
+import { useBaseStore } from '@/stores/base.js';
 
-const baseMenu = useMenuStore();
-const baseStore = useBaseStore();
+const menu = useMenuStore();
+const base = useBaseStore();
 </script>

@@ -40,7 +40,7 @@ export const useBaseStore = defineStore('base', {
       }, 2000);
     },
     focusBrowserWindow(index) {
-      useBaseStore().browserWindowRef[index-1].scrollIntoView({
+      this.browserWindowRef[index-1].scrollIntoView({
         behavior: 'smooth',
         block: 'center'
       });

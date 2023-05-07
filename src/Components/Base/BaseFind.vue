@@ -67,9 +67,10 @@ watch(
     );
     if (index !== -1) {
       menu.activeBrowserItem = index + 1;
-      base.browserWindowRef[index + 1].scrollIntoView({
-        block: 'center'
-      });
+      base.focusBrowserWindow(index + 1);
+      // base.browserWindowRef[index + 1].scrollIntoView({
+      //   block: 'center'
+      // });
     }
   }
 );

@@ -35,7 +35,7 @@ export const useBooksStore = defineStore('books', {
         });
         let index = booksIndex.findIndex((i) => i[0] === res.data.name);
         useMenuStore().activeBrowserItem = index + 1;
-        useBaseStore().focusBrowserWindow(useMenuStore().activeBrowserItem);
+        useBaseStore().focusBrowserWindow(index + 1);
       } catch (error) {
         useBaseStore().showDialog(error);
       }
@@ -62,10 +62,10 @@ export const useBooksStore = defineStore('books', {
         });
         let index = q.findIndex((i) => i[0] === oldIndex);
         useMenuStore().activeBrowserItem = index + 1;
-        console.log(this.books[useMenuStore().activeBrowserItem - 1][0]);
-        useBaseStore().browserWindowRef[index + 1].scrollIntoView({
-          block: 'center'
-        });
+        useBaseStore().focusBrowserWindow(index + 1);
+        // useBaseStore().browserWindowRef[index + 1].scrollIntoView({
+        //   block: 'center'
+        // });
       } catch (error) {
         useBaseStore().showDialog(error);
       }

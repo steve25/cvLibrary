@@ -15,7 +15,7 @@ export const useBaseStore = defineStore('base', {
       firstItemInput: '',
       secondItemInput: '',
       dataLength: null,
-      stopActiveWindow: false,
+      stopActiveWindow: false
     };
   },
   getters: {
@@ -40,9 +40,9 @@ export const useBaseStore = defineStore('base', {
       }, 2000);
     },
     focusBrowserWindow(index) {
-      this.browserWindowRef[index-1].scrollIntoView({
-        behavior: 'smooth',
-        block: 'center'
+      console.log('focus' + index);
+      this.browserWindowRef[index].scrollIntoView({
+        block: 'center',
       });
     }
   }

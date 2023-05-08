@@ -35,9 +35,10 @@ export const useUsersStore = defineStore('users', {
         let index = q.findIndex((i) => i[0] === result.data.name);
         console.log(q);
         useMenuStore().activeBrowserItem = index + 1;
-        useBaseStore().browserWindowRef[index + 1].scrollIntoView({
-          block: 'center'
-        });
+        useBaseStore().focusBrowserWindow (index + 1)
+        // useBaseStore().browserWindowRef[index + 1].scrollIntoView({
+        //   block: 'center'
+        // });
       } catch (error) {
         useBaseStore().showDialog(error);
       }
@@ -64,9 +65,10 @@ export const useUsersStore = defineStore('users', {
         });
         let index = q.findIndex((i) => i[0] === oldIndex);
         useMenuStore().activeBrowserItem = index + 1;
-        useBaseStore().browserWindowRef[index + 1].scrollIntoView({
-          block: 'center'
-        });
+        useBaseStore().focusBrowserWindow (index + 1)
+        // useBaseStore().browserWindowRef[index + 1].scrollIntoView({
+        //   block: 'center'
+        // });
       } catch (error) {
         useBaseStore().showDialog(error);
       }

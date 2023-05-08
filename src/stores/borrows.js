@@ -8,7 +8,7 @@ export const useBorrowsStore = defineStore('borrows', {
     };
   },
   getters: {
-    getUsers(state) {
+    getBorrows(state) {
       return state.borrows;
     }
   },

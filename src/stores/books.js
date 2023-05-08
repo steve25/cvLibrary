@@ -76,7 +76,7 @@ export const useBooksStore = defineStore('books', {
           'https://cvlibrary-fc29c-default-rtdb.europe-west1.firebasedatabase.app/books.json'
         );
         this.books = Object.entries(data.data).sort(
-          (a, b) => a[1].author.localeCompare(b[1].author) || a[1].title.localeCompare(b[1].title)
+          (a, b) => a[1].author.localeCompare(b[1].title) || a[1].title.localeCompare(b[1].author)
         );
       } catch (error) {
         useBaseStore().showDialog(error);

@@ -144,29 +144,13 @@ export const useMenuStore = defineStore('menu', {
       switch (this.activeAddIttem) {
         // save
         case 1:
-          // save new user
-          if (this.activeMainItem === 2) {
-            if (useBaseStore().firstItemInput === '' || useBaseStore().secondItemInput === '') {
-              useBaseStore().showDialog('All fields required');
-              return;
-            }
-            if (this.activeSecondaryItem === 1) {
-              useUsersStore().addNewUser();
-            } else {
-              useUsersStore().editNewUser();
-            }
-            // edit new user
-          } else {
-            if (useBaseStore().firstItemInput === '' || useBaseStore().secondItemInput === '') {
-              useBaseStore().showDialog('All fields required');
-              return;
-            }
-            if (this.activeSecondaryItem === 1) {
-              useBooksStore().addNewBook();
-            } else {
-              useBooksStore().editNewBook();
-            }
-          }
+          if (useBaseStore().firstItemInput === '' || useBaseStore().secondItemInput === '')
+            return useBaseStore().showDialog('All fields required');
+
+          if (this.activeMainItem === 2 && this.activeSecondaryItem === 1) useUsersStore().addNewUser();
+          if (this.activeMainItem === 2 && this.activeSecondaryItem === 2) useUsersStore().editNewUser();
+          if (this.activeMainItem === 3 && this.activeSecondaryItem === 1) useBooksStore().addNewBook();
+          if (this.activeMainItem === 3 && this.activeSecondaryItem === 2) useBooksStore().editNewBook();
           useBaseStore().firstItemInput = '';
           useBaseStore().secondItemInput = '';
           this.activeAddIttem = 1;
@@ -197,11 +181,8 @@ export const useMenuStore = defineStore('menu', {
     confirmKeyEnter() {
       switch (this.activeConfirmIttem) {
         case 1:
-          if (this.activeMainItem === 2) {
-            useUsersStore().deleteUser();
-          } else if (this.activeMainItem === 3) {
-            useBooksStore().deleteBook();
-          }
+          if (this.activeMainItem === 2) useUsersStore().deleteUser();
+          if (this.activeMainItem === 3) useBooksStore().deleteBook();
           this.activeConfirmIttem = 1;
           useBaseStore().confirmWindow = false;
           useBaseStore().stopActiveWindow = false;

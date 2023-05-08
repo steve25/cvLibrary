@@ -38,39 +38,52 @@ const findPlaceholder = computed(() => {
   return ['Find title', 'Find author', 'books.books'];
 });
 
-const datas = computed(() => {
-  if (menu.activeMainItem === 1) return borrows.borrows;
-  if (menu.activeMainItem === 2) return users.users;
-  return books.books;
-})
-
 watch(
   () => findFirstItem.value,
   (newValue) => {
-    console.log(datas.value);
-    const index = datas.value.findIndex(
-      (user) =>
-        user[1].lastName.toLowerCase().startsWith(newValue.toLowerCase()) &&
-        user[1].firstName.toLowerCase().startsWith(findSecondItem.value.toLowerCase())
-    );
+    let index = null;
+    if (menu.activeMainItem === 2) {
+      index = users.users.findIndex(
+        (user) =>
+          user[1].lastName.toLowerCase().startsWith(newValue.toLowerCase()) &&
+          user[1].firstName.toLowerCase().startsWith(findSecondItem.value.toLowerCase())
+      );
+    }
+    if (menu.activeMainItem === 3) {
+      index = books.books.findIndex(
+        (book) =>
+          book[1].title.toLowerCase().startsWith(newValue.toLowerCase()) &&
+          book[1].author.toLowerCase().startsWith(findSecondItem.value.toLowerCase())
+      );
+    }
     if (index !== -1) {
       menu.activeBrowserItem = index + 1;
       base.focusBrowserWindow(index + 1);
       // base.browserWindowRef[index + 1].scrollIntoView({
       //   block: 'center'
       // });
-    } 
+    }
   }
 );
 
 watch(
   () => findSecondItem.value,
   (newValue) => {
-    const index = findPlaceholder[2].findIndex(
-      (user) =>
-        user[1].firstName.toLowerCase().startsWith(newValue.toLowerCase()) &&
-        user[1].lastName.toLowerCase().startsWith(findFirstItem.value.toLowerCase())
-    );
+    let index = null;
+    if (menu.activeMainItem === 2) {
+      index = users.users.findIndex(
+        (user) =>
+          user[1].firstName.toLowerCase().startsWith(findSecondItem.value.toLowerCase()) &&
+          user[1].lastName.toLowerCase().startsWith(newValue.toLowerCase())
+      );
+    }
+    if (menu.activeMainItem === 3) {
+      index = books.books.findIndex(
+        (book) =>
+          book[1].title.toLowerCase().startsWith(findSecondItem.value.toLowerCase()) &&
+          book[1].author.toLowerCase().startsWith(newValue.toLowerCase())
+      );
+    }
     if (index !== -1) {
       menu.activeBrowserItem = index + 1;
       base.focusBrowserWindow(index + 1);

@@ -1,6 +1,7 @@
 <template>
   <th scope="col" class="px-2 py-1 border-r-2 border-gray-400 text-slate-800">
     <input
+      id="findFirstItem"
       type="text"
       class="w-full font-normal"
       :placeholder="findPlaceholder[0]"
@@ -9,6 +10,7 @@
   </th>
   <th scope="col" class="px-2 py-1 text-slate-800">
     <input
+      id="findSecondItem"
       type="text"
       class="w-full font-normal"
       :placeholder="findPlaceholder[1]"

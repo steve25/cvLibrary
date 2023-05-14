@@ -12,7 +12,7 @@ import { useMenuStore } from '@/stores/menu.js';
 const menu = useMenuStore();
 
 const headingValues = computed(() => {
-  if (menu.activeMainItem === 1) return ['User id', 'Book id'];
+  if (menu.activeMainItem === 1) return ['Id', 'Username'];
   if (menu.activeMainItem === 2) return ['Lastname', 'Firstname'];
   return ['Title', 'Author'];
 });

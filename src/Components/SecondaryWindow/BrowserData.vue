@@ -1,6 +1,7 @@
 <template>
   <template v-for="(data, index) in dataValues.data" :key="data[0]">
     <tr
+      @click="browserClick(index + 1)"
       :class="[menu.activeBrowserItem === index + 1 ? ['bg-blue-900', 'text-yellow-400'] : '']"
       :ref="(el) => (base.browserWindowRef[index + 1] = el)"
     >
@@ -29,17 +30,20 @@ import { useBorrowsStore } from '@/stores/borrows.js';
 const menu = useMenuStore();
 const users = useUsersStore();
 const books = useBooksStore();
-const base= useBaseStore();
+const base = useBaseStore();
 const borrows = useBorrowsStore();
 
 const dataValues = computed(() => {
   base.browserWindowRef = [];
-  if (menu.activeMainItem === 1)
-    return { data: borrows.borrows, template: ['user_id', 'book_id'] };
-  if (menu.activeMainItem === 2)
-    return { data: users.users, template: ['lastName', 'firstName'] };
+  if (menu.activeMainItem === 1) return { data: borrows.borrows, template: ['user_id', 'book_id'] };
+  if (menu.activeMainItem === 2) return { data: users.users, template: ['lastName', 'firstName'] };
   return { data: books.books, template: ['title', 'author'] };
 });
+
+const browserClick = (index) => {
+  if (base.activeNavigation !== 'browser') base.activeNavigation = 'browser';
+  menu.activeBrowserItem = index;
+};
 
 onMounted(() => {
   users.fetchUsers();

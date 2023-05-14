@@ -51,6 +51,24 @@ export const useMenuStore = defineStore('menu', {
       (this.activeMainItem = 1), (this.activeSecondaryItem = 1);
       useBaseStore().activeWindow = 'quit';
     },
+    mainMenuClick(index) {
+      switch (index) {
+        case 1:
+          this.activeMainItem = 1;
+          break;
+        case 2:
+          this.activeMainItem = 2;
+          break;
+        case 3:
+          this.activeMainItem = 3;
+          break;
+        case 4:
+          this.activeMainItem = 4;
+          break;
+      }
+      this.mainKeyEnter();
+    },
+
     //keypress in secondary window
     secondaryKeyControl(e) {
       if (useBaseStore().stopActiveWindow) return;
@@ -123,6 +141,24 @@ export const useMenuStore = defineStore('menu', {
           break;
       }
     },
+    secondaryMenuClick(index) {
+      switch (index) {
+        case 1:
+          this.activeSecondaryItem = 1;
+          break;
+        case 2:
+          this.activeSecondaryItem = 2;
+          break;
+        case 3:
+          this.activeSecondaryItem = 3;
+          break;
+        case 4:
+          this.activeSecondaryItem = 4;
+          break;
+      }
+      if (useBaseStore().activeNavigation !== 'menu') useBaseStore().activeNavigation = 'menu';
+      this.secondaryKeyEnter();
+    },
     // add window key controll
     addKeyControl(e) {
       switch (e.keyCode) {
@@ -147,10 +183,14 @@ export const useMenuStore = defineStore('menu', {
           if (useBaseStore().firstItemInput === '' || useBaseStore().secondItemInput === '')
             return useBaseStore().showDialog('All fields required');
 
-          if (this.activeMainItem === 2 && this.activeSecondaryItem === 1) useUsersStore().addNewUser();
-          if (this.activeMainItem === 2 && this.activeSecondaryItem === 2) useUsersStore().editNewUser();
-          if (this.activeMainItem === 3 && this.activeSecondaryItem === 1) useBooksStore().addNewBook();
-          if (this.activeMainItem === 3 && this.activeSecondaryItem === 2) useBooksStore().editNewBook();
+          if (this.activeMainItem === 2 && this.activeSecondaryItem === 1)
+            useUsersStore().addNewUser();
+          if (this.activeMainItem === 2 && this.activeSecondaryItem === 2)
+            useUsersStore().editNewUser();
+          if (this.activeMainItem === 3 && this.activeSecondaryItem === 1)
+            useBooksStore().addNewBook();
+          if (this.activeMainItem === 3 && this.activeSecondaryItem === 2)
+            useBooksStore().editNewBook();
           useBaseStore().firstItemInput = '';
           useBaseStore().secondItemInput = '';
           this.activeAddIttem = 1;
@@ -162,6 +202,17 @@ export const useMenuStore = defineStore('menu', {
           useBaseStore().activeWindow = 'secondary';
           break;
       }
+    },
+    addMenuClick(index) {
+      switch (index) {
+        case 1:
+          this.activeAddIttem = 1;
+          break;
+        case 2:
+          this.activeAddIttem = 2;
+          break;
+      }
+      this.addKeyEnter();
     },
     confirmKeyControl(e) {
       switch (e.keyCode) {
@@ -183,16 +234,15 @@ export const useMenuStore = defineStore('menu', {
         case 1:
           if (this.activeMainItem === 2) useUsersStore().deleteUser();
           if (this.activeMainItem === 3) useBooksStore().deleteBook();
-          this.activeConfirmIttem = 1;
-          useBaseStore().confirmWindow = false;
-          useBaseStore().stopActiveWindow = false;
-          break;
-        case 2:
-          this.activeConfirmIttem = 1;
-          useBaseStore().confirmWindow = false;
-          useBaseStore().stopActiveWindow = false;
           break;
       }
+      this.activeConfirmIttem = 1;
+      useBaseStore().confirmWindow = false;
+      useBaseStore().stopActiveWindow = false;
+    },
+    confirmMenuClick(index) {
+      this.activeConfirmIttem = index;
+      this.confirmKeyEnter();
     },
     //keypress quit window
     quitKeyControl(e) {

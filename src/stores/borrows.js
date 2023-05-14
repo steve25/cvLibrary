@@ -18,7 +18,8 @@ export const useBorrowsStore = defineStore('borrows', {
         const data = await axios.get(
           'https://cvlibrary-fc29c-default-rtdb.europe-west1.firebasedatabase.app/borrows.json'
         );
-        this.borrows = data.data;
+        this.borrows = Object.entries(data.data);
+        console.log(this.borrows);
       } catch (error) {
         console.log(error);
       }

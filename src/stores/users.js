@@ -36,9 +36,6 @@ export const useUsersStore = defineStore('users', {
         console.log(q);
         useMenuStore().activeBrowserItem = index + 1;
         useBaseStore().focusBrowserWindow (index + 1)
-        // useBaseStore().browserWindowRef[index + 1].scrollIntoView({
-        //   block: 'center'
-        // });
       } catch (error) {
         useBaseStore().showDialog(error);
       }
@@ -66,9 +63,6 @@ export const useUsersStore = defineStore('users', {
         let index = q.findIndex((i) => i[0] === oldIndex);
         useMenuStore().activeBrowserItem = index + 1;
         useBaseStore().focusBrowserWindow (index + 1)
-        // useBaseStore().browserWindowRef[index + 1].scrollIntoView({
-        //   block: 'center'
-        // });
       } catch (error) {
         useBaseStore().showDialog(error);
       }

@@ -9,6 +9,7 @@ export const useMenuStore = defineStore('menu', {
     return {
       mainMenuItems: ['Borrows', 'Users', 'Books', 'Quit'],
       secondaryMenuItems: ['Add', 'Edit', 'Delete', 'Close'],
+      secondaryBorrowsMenuItems: ['New', 'Open', 'Close'],
       addMenuItems: ['Save', 'Cancel'],
       confirmMenuItems: ['Delete', 'Cancel'],
       activeMainItem: 1,
@@ -92,14 +93,18 @@ export const useMenuStore = defineStore('menu', {
     // secondary window controls
     secondaryKeyUp() {
       // menu
-      if (useBaseStore().activeNavigation === 'menu')
+      if (useBaseStore().activeNavigation === 'menu' && this.activeMainItem === 1)
+        return this.menuKeyUp('activeSecondaryItem', this.secondaryBorrowsMenuItems);
+      if (useBaseStore().activeNavigation === 'menu' && this.activeMainItem !== 1)
         return this.menuKeyUp('activeSecondaryItem', this.secondaryMenuItems);
       // browser
       this.browserKeyUp();
     },
     secondaryKeyDown() {
       // menu
-      if (useBaseStore().activeNavigation === 'menu')
+      if (useBaseStore().activeNavigation === 'menu' && this.activeMainItem === 1)
+        return this.menuKeyDown('activeSecondaryItem', this.secondaryBorrowsMenuItems);
+      if (useBaseStore().activeNavigation === 'menu' && this.activeMainItem !== 1)
         return this.menuKeyDown('activeSecondaryItem', this.secondaryMenuItems);
       // browser
       this.browserKeyDown();
@@ -128,6 +133,7 @@ export const useMenuStore = defineStore('menu', {
           break;
         // delete
         case 3:
+          if (this.activeMainItem === 1) return (this.activeSecondaryItem = 4), (this.secondaryKeyEnter());
           if (this.getDataItemsLength === 0) return useBaseStore().showDialog('No item selected');
           useBaseStore().stopActiveWindow = true;
           setTimeout(() => {

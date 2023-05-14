@@ -24,14 +24,26 @@
             class="text-base border-2 p-4"
             :class="[base.activeNavigation === 'menu' ? 'border-red-600' : 'border-slate-200']"
           >
+          <template v-if="menu.activeMainItem === 1">
             <base-menu
-              v-for="(secondaryMenuItem, index) in menu.secondaryMenuItems"
-              :key="secondaryMenuItem"
-              :menuItem="secondaryMenuItem"
-              :index="index"
-              :isActive="menu.activeSecondaryItem"
-              color="bg-orange-800"
+            v-for="(secondaryMenuItem, index) in menu.secondaryBorrowsMenuItems"
+            :key="secondaryMenuItem"
+            :menuItem="secondaryMenuItem"
+            :index="index"
+            :isActive="menu.activeSecondaryItem"
+            color="bg-orange-800"
             />
+          </template>
+          <template v-else>
+            <base-menu
+            v-for="(secondaryMenuItem, index) in menu.secondaryMenuItems"
+            :key="secondaryMenuItem"
+            :menuItem="secondaryMenuItem"
+            :index="index"
+            :isActive="menu.activeSecondaryItem"
+            color="bg-orange-800"
+            />
+          </template>
           </ul>
         </div>
       </div>
